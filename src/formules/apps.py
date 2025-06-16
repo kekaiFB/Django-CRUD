@@ -1,6 +1,12 @@
 from django.apps import AppConfig
 
 
-class formulesConfig(AppConfig):
+class FormulesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'formules'
+
+    def ready(self):
+        from django.contrib.auth.models import Group
+        Group.objects.get_or_create(name='Doctor')
+        Group.objects.get_or_create(name='Patient')
+        from . import signals

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
 
 class Formules(models.Model):
@@ -7,6 +8,14 @@ class Formules(models.Model):
     vozrast = models.IntegerField("Возраст", blank=True, null=True)
     ves = models.FloatField("Вес (кг)", blank=True, null=True)
     rost = models.FloatField("Рост (см)", blank=True, null=True)
+    patient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="formules",
+        verbose_name="Пациент",
+        blank=True,
+        null=True,
+    )
 
     simptomy_dni = models.IntegerField("Начало или длительность симптомов (в днях)", blank=True, null=True)
     anamnez = models.IntegerField("Анамнез", blank=True, null=True)
