@@ -8,6 +8,6 @@ User = get_user_model()
 @receiver(post_save, sender=User)
 def add_to_default_group(sender, instance, created, **kwargs):
     if created:
-        patient_group, _ = Group.objects.get_or_create(name='Patient')
+        patient_group, _ = Group.objects.get_or_create(name='Пациент')
         instance.groups.add(patient_group)
 

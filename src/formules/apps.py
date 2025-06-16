@@ -7,6 +7,6 @@ class FormulesConfig(AppConfig):
 
     def ready(self):
         from django.contrib.auth.models import Group
-        Group.objects.get_or_create(name='Doctor')
-        Group.objects.get_or_create(name='Patient')
+        Group.objects.get_or_create(name='Врач')
+        Group.objects.get_or_create(name='Пациент')
         from . import signals

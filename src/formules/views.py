@@ -17,7 +17,7 @@ def Index(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def formulesAPI(request):
-    if request.user.groups.filter(name='Doctor').exists():
+    if request.user.groups.filter(name='Врач').exists():
         formules = Formules.objects.all().order_by('id')
     else:
         formules = Formules.objects.filter(patient=request.user).order_by('id')
@@ -29,7 +29,7 @@ def formulesAPI(request):
 @permission_classes([IsAuthenticated])
 def formulesDetailsAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
-    if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
+    if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         serializer = FormuleSerializer(obj, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_403_FORBIDDEN)
@@ -50,7 +50,7 @@ def AddFormuleAPI(request):
 @permission_classes([IsAuthenticated])
 def EditFormuleAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
-    if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
+    if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         serializer = FormuleSerializer(obj, data=request.data)
         if serializer.is_valid():
             serializer.save(patient=obj.patient)
@@ -62,7 +62,7 @@ def EditFormuleAPI(request, id):
 @permission_classes([IsAuthenticated])
 def DeleteFormuleAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
-    if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
+    if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         obj.delete()
         return Response('Formule successfully Deleted!', status=status.HTTP_200_OK)
     return Response(status=status.HTTP_403_FORBIDDEN)
@@ -70,10 +70,14 @@ def DeleteFormuleAPI(request, id):
 @login_required
 def users_view(request):
     user = request.user
-    if not (user.is_superuser or user.groups.filter(name='Doctor').exists()):
+    if not (user.is_superuser or user.groups.filter(name='Врач').exists()):
         return HttpResponseForbidden()
     User = get_user_model()
     users = User.objects.all().order_by('id').prefetch_related('groups')
+
+    for u in users:
+        u.is_doctor = u.groups.filter(name='Врач').exists()  # добавляем флаг
+
     context = {
         'users': users,
         'is_admin': user.is_superuser,
@@ -86,7 +90,7 @@ def toggle_doctor_role(request, user_id):
         return HttpResponseForbidden()
     User = get_user_model()
     target = get_object_or_404(User, id=user_id)
-    doctor_group, _ = Group.objects.get_or_create(name='Doctor')
+    doctor_group, _ = Group.objects.get_or_create(name='Врач')
     if doctor_group in target.groups.all():
         target.groups.remove(doctor_group)
     else:
