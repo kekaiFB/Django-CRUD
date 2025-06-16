@@ -83,7 +83,12 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="header-title">Список пользователей</h3>
-        <a class="btn-gradient-physics" href="{% url 'Index' %}">На главную</a>
+        <div>
+            {% if is_admin %}
+            <a class="btn-gradient-physics mr-2" href="{% url 'admin:users_customuser_add' %}">Добавить пользователя</a>
+            {% endif %}
+            <a class="btn-gradient-physics" href="{% url 'Index' %}">На главную</a>
+        </div>
     </div>
     <div class="custom-table p-3">
         <table class="table table-bordered mb-0">
@@ -107,7 +112,7 @@
                         </td>
                         {% if is_admin %}
                         <td>
-                           <form method="post" action="{% url 'toggle_doctor_role' u.id %}">
+                           <form method="post" action="{% url 'toggle_doctor_role' u.id %}" class="mb-1">
                                 {% csrf_token %}
                                 {% if u.is_doctor %}
                                     <button class="btn btn-physics btn-delete btn-sm" type="submit">Убрать врача</button>
@@ -115,6 +120,8 @@
                                     <button class="btn btn-physics btn-edit btn-sm" type="submit">Назначить врачом</button>
                                 {% endif %}
                             </form>
+                            <a class="btn btn-physics btn-edit btn-sm mb-1" href="{% url 'admin:users_customuser_change' u.id %}">Редактировать</a>
+                            <a class="btn btn-physics btn-edit btn-sm" href="{% url 'admin:users_customuser_password_change' u.id %}">Пароль</a>
                         </td>
                         {% endif %}
                     </tr>
