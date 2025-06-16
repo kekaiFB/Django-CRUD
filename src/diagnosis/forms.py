@@ -43,3 +43,7 @@ class DiagnosisForm(forms.ModelForm):
                 self.fields[field_name].widget.attrs.setdefault('placeholder', placeholder)
         if 'imt' in self.fields:
             self.fields['imt'].disabled = True
+
+            
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'

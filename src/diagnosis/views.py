@@ -26,6 +26,8 @@ def Index(request):
     context = {
         'form': form,
     }
+    context['is_doctor'] = request.user.groups.filter(name='Врач').exists()
+
     return render(request, 'Index.html', context)
 
 

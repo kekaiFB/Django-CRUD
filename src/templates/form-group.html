@@ -1,19 +1,29 @@
 <input type="hidden" id="Myid" value="">
-{% if request.user.is_superuser or request.user.groups.filter(name='Врач').exists %}
-<div class="form-group mb-2">
-    {{ form.patient.label_tag }}
-    {{ form.patient }}
-</div>
-{% endif %}
-{% for field in form.visible_fields %}
-    {% if field.name != 'patient' %}
-    <div class="form-group mb-2">
-        {{ field.label_tag }}
-        {{ field }}
-    </div>
-    {% endif %}
-{% endfor %}
-<div class="d-grid gap-2 mt-3">
-    <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
-    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Отмена</button>
+<div class="container py-3">
+    <form>
+        {% if request.user.is_superuser or is_doctor %}
+        <div class="mb-3">
+            <label class="form-label">{{ form.patient.label }}</label>
+            {{ form.patient }}
+        </div>
+        {% endif %}
+        {% for field in form.visible_fields %}
+            {% if field.name != 'patient' %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Отмена</button>
+        </div>
+    </form>
 </div>

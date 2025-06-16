@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 class DiagnosisSerializer(serializers.ModelSerializer):
+    fio = serializers.CharField(source='patient.email', read_only=True)
     pol = serializers.CharField(source='patient.pol', read_only=True)
     vozrast = serializers.IntegerField(source='patient.vozrast', read_only=True)
     ves = serializers.FloatField(source='patient.ves', read_only=True)
