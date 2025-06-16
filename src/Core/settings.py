@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users.apps.UsersConfig',
-    'diagnosis.apps.DiagnosisConfig',
+    # Register the diagnosis application under its actual module path.
+    'formules.apps.DiagnosisConfig',
 ]
 
 MIDDLEWARE = [

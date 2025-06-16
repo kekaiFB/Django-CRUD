@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
+"""Database models for the diagnosis app."""
 
 class Diagnosis(models.Model):
     patient = models.ForeignKey(
@@ -44,12 +44,16 @@ class Diagnosis(models.Model):
     imt = models.FloatField("ИМТ", blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.ves and self.rost:
+        """Automatically calculate BMI from patient's data when possible."""
+        if self.patient and self.patient.ves and self.patient.rost:
             try:
-                self.imt = self.ves / ((self.rost / 100) ** 2)
+                self.imt = self.patient.ves / ((self.patient.rost / 100) ** 2)
             except ZeroDivisionError:
                 self.imt = None
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Diagnosis #{self.pk}"
 
     class Meta:
         verbose_name_plural = "Формулы"
