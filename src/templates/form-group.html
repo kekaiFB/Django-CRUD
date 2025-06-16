@@ -1,4 +1,15 @@
 <input type="hidden" id="Myid" value="">
+{% if patients %}
+<div class="form-group mb-2">
+    <label for="p-patient">Пациент</label>
+    <select class="form-control" id="p-patient" name="patient">
+        <option value="">---</option>
+        {% for p in patients %}
+            <option value="{{ p.id }}">{{ p.email }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endif %}
 <div class="form-group mb-2"><label>ФИО</label>
     <input type="text" class="form-control" name="fio">
 </div>
