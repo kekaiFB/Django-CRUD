@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users.apps.UsersConfig',
-    'formules.apps.FormulesConfig',
+    'diagnosis.apps.DiagnosisConfig',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +84,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'formulesDB',
+        'NAME': 'diagnosisDB',
         'USER': 'postgres',
         'PASSWORD': 'marya0911SQL',
         'HOST': 'localhost',

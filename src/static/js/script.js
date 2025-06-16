@@ -30,9 +30,9 @@ $.ajaxSetup({
     }
 }); 
 
-//All formules API
+//All diagnosis API
 $.ajax({
-    url : "/api/formules/",
+    url : "/api/diagnosis/",
     dataType: "json",
     success : function (response) {
         let trHTML = '';
@@ -96,13 +96,13 @@ $('#create').click(function(){
 $(function() { 
     $('#addFormule').on('submit', function(e) { 
         e.preventDefault();  
-        let myurl = "/api/formules/add/";
+        let myurl = "/api/diagnosis/add/";
 
         $.ajax({
             type : 'POST',
             url : myurl,
             contentType: "application/json", 
-            data :  JSON.stringify( getFormulesDataFromForm('#addFormuleModal')),
+            data :  JSON.stringify( getDiagnosisDataFromForm('#addFormuleModal')),
             dataType: "json",
             success: function(data){
                 alert("Формула добавлена");
@@ -115,7 +115,7 @@ $(function() {
     });
 });
 
-function getFormulesDataFromForm(formSelector) {
+function getDiagnosisDataFromForm(formSelector) {
     const formData = {};
     $(formSelector + ' [name]').each(function () {
         const name = $(this).attr('name');
@@ -138,7 +138,7 @@ function getFormulesDataFromForm(formSelector) {
 }
 
 
-function fillFormulesFormData(formSelector, data) {
+function fillDiagnosisFormData(formSelector, data) {
     for (const key in data) {
         const $el = $(formSelector + ` [name="${key}"]`);
         if ($el.length) $el.val(data[key]);
@@ -152,10 +152,10 @@ $('#Formule-Records').on('click', '.update', function(e){
     const id = $(this).attr('id');
     $('#Myid').val(id);
     $.ajax({
-        url: `/api/formules/${id}/`,
+        url: `/api/diagnosis/${id}/`,
         method: 'GET',
         success: function(result){
-            fillFormulesFormData('#editFormule', result);
+            fillDiagnosisFormData('#editFormule', result);
         },
         error: function(xhr) {
             console.error("Ошибка загрузки данных:", xhr);
@@ -170,10 +170,10 @@ $('#Formule-Records').on('click', '.delete', function(e){
     const id = $(this).attr('id');
     $('#Myid').val(id);
     $.ajax({
-        url: `/api/formules/${id}/`,
+        url: `/api/diagnosis/${id}/`,
         method: 'GET',
         success: function(result){
-            fillFormulesFormData('#deleteFormule', result); // если ты хочешь отобразить данные
+            fillDiagnosisFormData('#deleteFormule', result); // если ты хочешь отобразить данные
         },
         error: function(xhr) {
             console.error("Ошибка загрузки данных:", xhr);
@@ -189,12 +189,12 @@ $(function() {
 
         let id = $("#Myid").attr("value");
 
-        let myurl = `/api/formules/edit/${id}/`;
+        let myurl = `/api/diagnosis/edit/${id}/`;
         $.ajax({
             type : 'PUT',
             url : myurl,
             contentType: "application/json", 
-            data : JSON.stringify(getFormulesDataFromForm('#editFormuleModal')),
+            data : JSON.stringify(getDiagnosisDataFromForm('#editFormuleModal')),
             dataType: "json",
             success: function(data){
                 alert("Формула обновлена");
@@ -208,13 +208,13 @@ $(function() {
 });
 
 
-//Save Delete formules Button
+//Save Delete diagnosis Button
 $(function() { 
     $('#deleteFormule').on('submit', function(e) { 
         e.preventDefault(); 
         let id = $("#Myid").attr("value");
 
-        let myurl = `/api/formules/delete/${id}/`;
+        let myurl = `/api/diagnosis/delete/${id}/`;
 
         $.ajax({
             async: true,

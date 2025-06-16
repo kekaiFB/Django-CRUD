@@ -22,19 +22,19 @@ def Index(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def formulesAPI(request):
+def diagnosisAPI(request):
     if request.user.groups.filter(name='Врач').exists():
-        formules = Formules.objects.all().order_by('id')
+        diagnosis = Diagnosis.objects.all().order_by('id')
     else:
-        formules = Formules.objects.filter(patient=request.user).order_by('id')
-    serializer = FormuleSerializer(formules, many=True)
+        diagnosis = Diagnosis.objects.filter(patient=request.user).order_by('id')
+    serializer = FormuleSerializer(diagnosis, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def formulesDetailsAPI(request, id):
-    obj = get_object_or_404(Formules, id=id)
+def diagnosisDetailsAPI(request, id):
+    obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         serializer = FormuleSerializer(obj, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -66,7 +66,7 @@ def AddFormuleAPI(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def EditFormuleAPI(request, id):
-    obj = get_object_or_404(Formules, id=id)
+    obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         serializer = FormuleSerializer(obj, data=request.data)
         if serializer.is_valid():
@@ -78,7 +78,7 @@ def EditFormuleAPI(request, id):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def DeleteFormuleAPI(request, id):
-    obj = get_object_or_404(Formules, id=id)
+    obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         obj.delete()
         return Response('Formule successfully Deleted!', status=status.HTTP_200_OK)

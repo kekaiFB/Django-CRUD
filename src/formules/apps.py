@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class FormulesConfig(AppConfig):
+class DiagnosisConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'formules'
+    name = 'diagnosis'
 
     def ready(self):
         from django.contrib.auth.models import Group

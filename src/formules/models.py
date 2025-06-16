@@ -2,12 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-class Formules(models.Model):
-    fio = models.CharField("ФИО", max_length=255, blank=True, null=True)
+class Diagnosis(models.Model):
     patient = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        related_name="formules",
+        related_name="diagnosis",
         verbose_name="Пациент",
         blank=True,
         null=True,
@@ -45,9 +44,9 @@ class Formules(models.Model):
     imt = models.FloatField("ИМТ", blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.patient and self.patient.ves and self.patient.rost:
+        if self.ves and self.rost:
             try:
-                self.imt = self.patient.ves / ((self.patient.rost / 100) ** 2)
+                self.imt = self.ves / ((self.rost / 100) ** 2)
             except ZeroDivisionError:
                 self.imt = None
         super().save(*args, **kwargs)

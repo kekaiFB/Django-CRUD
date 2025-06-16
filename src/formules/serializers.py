@@ -34,5 +34,5 @@ class FormuleSerializer(serializers.ModelSerializer):
                 self.fields[field_name].style = {'placeholder': placeholder}
 
     class Meta:
-        model = Formules
+        model = Diagnosis
         fields = '__all__'

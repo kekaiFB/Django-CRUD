@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Formules
+from .models import Diagnosis
 
 
-admin.site.register(Formules)
+admin.site.register(Diagnosis)
