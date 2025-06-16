@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django import forms
 from .models import *
 from .serializers import *
+from .forms import DiagnosisForm
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,11 +15,17 @@ from django.shortcuts import render, redirect
 
 @login_required
 def Index(request):
-    context = {}
+    form = DiagnosisForm()
     if request.user.groups.filter(name='Врач').exists() or request.user.is_superuser:
         patient_group = Group.objects.filter(name='Пациент').first()
-        if patient_group:
-            context['patients'] = patient_group.user_set.all().order_by('email')
+        if patient_group and 'patient' in form.fields:
+            form.fields['patient'].queryset = patient_group.user_set.all().order_by('email')
+    else:
+        if 'patient' in form.fields:
+            form.fields['patient'].widget = forms.HiddenInput()
+    context = {
+        'form': form,
+    }
     return render(request, 'Index.html', context)
 
 
