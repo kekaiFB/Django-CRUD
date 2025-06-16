@@ -250,7 +250,7 @@
                     <div class="modal-body">
                         <form id="addDiagnosis" action="">
                             {% csrf_token %}
-                            {% include "form-group.html" %}                               
+                            {% include "form-group.html" with form=form %}
                         </form>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                     <div class="modal-body">
                         <form id="editDiagnosis" action="">
                             {% csrf_token %}
-                            {% include "form-group.html" %}
+                            {% include "form-group.html" with form=form %}
                         </form>
                     </div>
                 </div>
