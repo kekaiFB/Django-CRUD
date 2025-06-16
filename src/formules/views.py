@@ -1,14 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 @login_required
 def Index(request):
@@ -66,3 +66,29 @@ def DeleteFormuleAPI(request, id):
         obj.delete()
         return Response('Formule successfully Deleted!', status=status.HTTP_200_OK)
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+@login_required
+def users_view(request):
+    user = request.user
+    if not (user.is_superuser or user.groups.filter(name='Doctor').exists()):
+        return HttpResponseForbidden()
+    User = get_user_model()
+    users = User.objects.all().order_by('id').prefetch_related('groups')
+    context = {
+        'users': users,
+        'is_admin': user.is_superuser,
+    }
+    return render(request, 'users.html', context)
+
+@login_required
+def toggle_doctor_role(request, user_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+    User = get_user_model()
+    target = get_object_or_404(User, id=user_id)
+    doctor_group, _ = Group.objects.get_or_create(name='Doctor')
+    if doctor_group in target.groups.all():
+        target.groups.remove(doctor_group)
+    else:
+        target.groups.add(doctor_group)
+    return redirect('users_view')
