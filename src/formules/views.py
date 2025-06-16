@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.shortcuts import render, redirect
 
 @login_required
 def Index(request):
@@ -112,3 +113,16 @@ def toggle_doctor_role(request, user_id):
     else:
         target.groups.add(doctor_group)
     return redirect('users_view')
+
+
+@login_required
+def profile_edit(request):
+    user = request.user
+    if request.method == 'POST':
+        user.pol = request.POST.get('pol') or None
+        user.vozrast = request.POST.get('vozrast') or None
+        user.ves = request.POST.get('ves') or None
+        user.rost = request.POST.get('rost') or None
+        user.save()
+        return redirect('Index')
+    return render(request, 'profile.html')

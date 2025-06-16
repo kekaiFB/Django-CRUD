@@ -4,10 +4,6 @@ from django.utils import timezone
 
 class Formules(models.Model):
     fio = models.CharField("ФИО", max_length=255, blank=True, null=True)
-    pol = models.CharField("Пол", max_length=1, choices=[("М", "Мужской"), ("Ж", "Женский")], blank=True, null=True)
-    vozrast = models.IntegerField("Возраст", blank=True, null=True)
-    ves = models.FloatField("Вес (кг)", blank=True, null=True)
-    rost = models.FloatField("Рост (см)", blank=True, null=True)
     patient = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -49,9 +45,9 @@ class Formules(models.Model):
     imt = models.FloatField("ИМТ", blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.ves and self.rost:
+        if self.patient and self.patient.ves and self.patient.rost:
             try:
-                self.imt = self.ves / ((self.rost / 100) ** 2)
+                self.imt = self.patient.ves / ((self.patient.rost / 100) ** 2)
             except ZeroDivisionError:
                 self.imt = None
         super().save(*args, **kwargs)
