@@ -1,17 +1,21 @@
 from django.shortcuts import render
 from .models import *
 from .serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def Index(request):
     return render(request, 'Index.html')
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def formulesAPI(request):
     if request.user.groups.filter(name='Doctor').exists():
         formules = Formules.objects.all().order_by('id')
@@ -22,6 +26,7 @@ def formulesAPI(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def formulesDetailsAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
     if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
@@ -31,6 +36,7 @@ def formulesDetailsAPI(request, id):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def AddFormuleAPI(request):
     serializer = FormuleSerializer(data=request.data)
     if serializer.is_valid():
@@ -41,6 +47,7 @@ def AddFormuleAPI(request):
 
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def EditFormuleAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
     if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
@@ -52,6 +59,7 @@ def EditFormuleAPI(request, id):
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def DeleteFormuleAPI(request, id):
     obj = get_object_or_404(Formules, id=id)
     if request.user.groups.filter(name='Doctor').exists() or obj.patient == request.user:
