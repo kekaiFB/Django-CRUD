@@ -32,7 +32,7 @@ $.ajaxSetup({
 
 //All formules API
 $.ajax({
-    url : "http://localhost:8000/api/formules/",
+    url : "/api/formules/",
     dataType: "json",
     success : function (response) {
         let trHTML = '';
@@ -96,7 +96,7 @@ $('#create').click(function(){
 $(function() { 
     $('#addFormule').on('submit', function(e) { 
         e.preventDefault();  
-        let myurl = "http://localhost:8000/api/formules/add/";
+        let myurl = "/api/formules/add/";
 
         $.ajax({
             type : 'POST',
@@ -152,7 +152,7 @@ $('#Formule-Records').on('click', '.update', function(e){
     const id = $(this).attr('id');
     $('#Myid').val(id);
     $.ajax({
-        url: `http://localhost:8000/api/formules/${id}/`,
+        url: `/api/formules/${id}/`,
         method: 'GET',
         success: function(result){
             fillFormulesFormData('#editFormule', result);
@@ -170,7 +170,7 @@ $('#Formule-Records').on('click', '.delete', function(e){
     const id = $(this).attr('id');
     $('#Myid').val(id);
     $.ajax({
-        url: `http://localhost:8000/api/formules/${id}/`,
+        url: `/api/formules/${id}/`,
         method: 'GET',
         success: function(result){
             fillFormulesFormData('#deleteFormule', result); // если ты хочешь отобразить данные
@@ -189,7 +189,7 @@ $(function() {
 
         let id = $("#Myid").attr("value");
 
-        let myurl = "http://localhost:8000/api/formules/edit/"+id+"/";
+        let myurl = `/api/formules/edit/${id}/`;
         $.ajax({
             type : 'PUT',
             url : myurl,
@@ -214,7 +214,7 @@ $(function() {
         e.preventDefault(); 
         let id = $("#Myid").attr("value");
 
-        let myurl = "http://localhost:8000/api/formules/delete/"+id+"/";
+        let myurl = `/api/formules/delete/${id}/`;
 
         $.ajax({
             async: true,
