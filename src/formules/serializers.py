@@ -3,11 +3,14 @@ from rest_framework import serializers
 
 
 class FormuleSerializer(serializers.ModelSerializer):
+    pol = serializers.CharField(source='patient.pol', read_only=True)
+    vozrast = serializers.IntegerField(source='patient.vozrast', read_only=True)
+    ves = serializers.FloatField(source='patient.ves', read_only=True)
+    rost = serializers.FloatField(source='patient.rost', read_only=True)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         placeholders = {
-            'pol': "М\nЖ",
             'simptomy_dni': "(до 5 дней., 5-10, более 10, более 15)",
             'anamnez': "ССЗ – да (0), нет (1), Сердечная недостаточность, СД",
             'kashel': "Непродуктивный (7-10), Влажный (4-6), Покашливание (0-3)",
