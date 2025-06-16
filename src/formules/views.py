@@ -12,7 +12,12 @@ from django.contrib.auth import get_user_model
 
 @login_required
 def Index(request):
-    return render(request, 'Index.html')
+    context = {}
+    if request.user.groups.filter(name='Врач').exists() or request.user.is_superuser:
+        patient_group = Group.objects.filter(name='Пациент').first()
+        if patient_group:
+            context['patients'] = patient_group.user_set.all().order_by('email')
+    return render(request, 'Index.html', context)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -38,11 +43,22 @@ def formulesDetailsAPI(request, id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AddFormuleAPI(request):
-    serializer = FormuleSerializer(data=request.data)
+    data = request.data.copy()
+    patient = request.user
+    if request.user.groups.filter(name='Врач').exists() and data.get('patient'):
+        User = get_user_model()
+        try:
+            patient = User.objects.get(id=data['patient'])
+        except User.DoesNotExist:
+            return Response({'patient': 'Invalid'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        data['patient'] = patient.id
+
+    serializer = FormuleSerializer(data=data)
     if serializer.is_valid():
-        serializer.save(patient=request.user)
+        serializer.save(patient=patient)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
