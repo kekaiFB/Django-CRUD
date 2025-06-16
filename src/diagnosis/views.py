@@ -20,6 +20,8 @@ def Index(request):
             context['patients'] = patient_group.user_set.all().order_by('email')
     return render(request, 'Index.html', context)
 
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def diagnosisAPI(request):
@@ -27,7 +29,7 @@ def diagnosisAPI(request):
         diagnosis = Diagnosis.objects.all().order_by('id')
     else:
         diagnosis = Diagnosis.objects.filter(patient=request.user).order_by('id')
-    serializer = FormuleSerializer(diagnosis, many=True)
+    serializer = DiagnosisSerializer(diagnosis, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -36,14 +38,14 @@ def diagnosisAPI(request):
 def diagnosisDetailsAPI(request, id):
     obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
-        serializer = FormuleSerializer(obj, many=False)
+        serializer = DiagnosisSerializer(obj, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def AddFormuleAPI(request):
+def AddDiagnosisAPI(request):
     data = request.data.copy()
     patient = request.user
     if request.user.groups.filter(name='Врач').exists() and data.get('patient'):
@@ -55,7 +57,7 @@ def AddFormuleAPI(request):
     else:
         data['patient'] = patient.id
 
-    serializer = FormuleSerializer(data=data)
+    serializer = DiagnosisSerializer(data=data)
     if serializer.is_valid():
         serializer.save(patient=patient)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -65,10 +67,10 @@ def AddFormuleAPI(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def EditFormuleAPI(request, id):
+def EditDiagnosisAPI(request, id):
     obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
-        serializer = FormuleSerializer(obj, data=request.data)
+        serializer = DiagnosisSerializer(obj, data=request.data)
         if serializer.is_valid():
             serializer.save(patient=obj.patient)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -77,11 +79,11 @@ def EditFormuleAPI(request, id):
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def DeleteFormuleAPI(request, id):
+def DeleteDiagnosisAPI(request, id):
     obj = get_object_or_404(Diagnosis, id=id)
     if request.user.groups.filter(name='Врач').exists() or obj.patient == request.user:
         obj.delete()
-        return Response('Formule successfully Deleted!', status=status.HTTP_200_OK)
+        return Response('Diagnosis successfully Deleted!', status=status.HTTP_200_OK)
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 @login_required

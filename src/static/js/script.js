@@ -39,11 +39,11 @@ $.ajax({
     $.each(response, function (i, item) {
         trHTML += `<tr>
             <td>
-                <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editFormuleModal" title="Редактировать">
+                <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisModal" title="Редактировать">
                     <i class="fas fa-pen"></i>
                 </button>
 
-                <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteFormule" title="Удалить">
+                <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteDiagnosis" title="Удалить">
                     <i class="fas fa-trash"></i>
                 </button>
 
@@ -83,18 +83,18 @@ $.ajax({
             <td>${item.updated_at?.slice(0, 10) ?? ''}</td>
         </tr>`;
 });
-$('#Formule-Records tbody').html(trHTML);
+$('#Diagnosis-Records tbody').html(trHTML);
 
     }
 });
 
 $('#create').click(function(){ 
-    $("#add-Formule").trigger('reset');
+    $("#add-Diagnosis").trigger('reset');
 });
 
-//Save New Formule Button
+//Save New Diagnosis Button
 $(function() { 
-    $('#addFormule').on('submit', function(e) { 
+    $('#addDiagnosis').on('submit', function(e) { 
         e.preventDefault();  
         let myurl = "/api/diagnosis/add/";
 
@@ -102,7 +102,7 @@ $(function() {
             type : 'POST',
             url : myurl,
             contentType: "application/json", 
-            data :  JSON.stringify( getDiagnosisDataFromForm('#addFormuleModal')),
+            data :  JSON.stringify( getDiagnosisDataFromForm('#addDiagnosisModal')),
             dataType: "json",
             success: function(data){
                 alert("Формула добавлена");
@@ -147,7 +147,7 @@ function fillDiagnosisFormData(formSelector, data) {
 
 
 // Edit
-$('#Formule-Records').on('click', '.update', function(e){
+$('#Diagnosis-Records').on('click', '.update', function(e){
     e.preventDefault();
     const id = $(this).attr('id');
     $('#Myid').val(id);
@@ -155,7 +155,7 @@ $('#Formule-Records').on('click', '.update', function(e){
         url: `/api/diagnosis/${id}/`,
         method: 'GET',
         success: function(result){
-            fillDiagnosisFormData('#editFormule', result);
+            fillDiagnosisFormData('#editDiagnosis', result);
         },
         error: function(xhr) {
             console.error("Ошибка загрузки данных:", xhr);
@@ -165,7 +165,7 @@ $('#Formule-Records').on('click', '.update', function(e){
 
 
 // Delete
-$('#Formule-Records').on('click', '.delete', function(e){
+$('#Diagnosis-Records').on('click', '.delete', function(e){
     e.preventDefault();
     const id = $(this).attr('id');
     $('#Myid').val(id);
@@ -173,7 +173,7 @@ $('#Formule-Records').on('click', '.delete', function(e){
         url: `/api/diagnosis/${id}/`,
         method: 'GET',
         success: function(result){
-            fillDiagnosisFormData('#deleteFormule', result); // если ты хочешь отобразить данные
+            fillDiagnosisFormData('#deleteDiagnosis', result); // если ты хочешь отобразить данные
         },
         error: function(xhr) {
             console.error("Ошибка загрузки данных:", xhr);
@@ -182,9 +182,9 @@ $('#Formule-Records').on('click', '.delete', function(e){
 });
 
 
-//Save Edited Formule Button
+//Save Edited Diagnosis Button
 $(function() { 
-    $('#editFormule').on('submit', function(e) { 
+    $('#editDiagnosis').on('submit', function(e) { 
         e.preventDefault();  
 
         let id = $("#Myid").attr("value");
@@ -194,7 +194,7 @@ $(function() {
             type : 'PUT',
             url : myurl,
             contentType: "application/json", 
-            data : JSON.stringify(getDiagnosisDataFromForm('#editFormuleModal')),
+            data : JSON.stringify(getDiagnosisDataFromForm('#editDiagnosisModal')),
             dataType: "json",
             success: function(data){
                 alert("Формула обновлена");
@@ -210,7 +210,7 @@ $(function() {
 
 //Save Delete diagnosis Button
 $(function() { 
-    $('#deleteFormule').on('submit', function(e) { 
+    $('#deleteDiagnosis').on('submit', function(e) { 
         e.preventDefault(); 
         let id = $("#Myid").attr("value");
 

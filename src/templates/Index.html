@@ -159,7 +159,7 @@
         <div class="row">
             <div class="col-sm-12 m-2 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn-gradient-physics mr-3" data-toggle="modal" data-target="#addFormuleModal">
+                <button type="button" class="btn-gradient-physics mr-3" data-toggle="modal" data-target="#addDiagnosisModal">
                     <i class="fas fa-plus-circle"></i> Добавить формулу
                 </button>
                 <h2 class="mb-0 font-weight-bold text-primary" style="letter-spacing:1px;">Список формул</h2>
@@ -180,7 +180,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="table-container">
-                    <table id="Formule-Records" class="table table-hover table-striped rounded">
+                    <table id="Diagnosis-Records" class="table table-hover table-striped rounded">
                         <thead class="thead-dark">
                             <tr>
                               <th>Действия</th>
@@ -226,7 +226,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12 m-2">
-                <button type="button" class="btn-gradient-physics" data-toggle="modal" data-target="#addFormuleModal">
+                <button type="button" class="btn-gradient-physics" data-toggle="modal" data-target="#addDiagnosisModal">
                     <i class="fas fa-plus-circle"></i> Добавить формулу
                 </button>
             </div>
@@ -235,17 +235,17 @@
     
     <!-- Добавить формулу Modal -->
     <div class="container">        
-        <div class="modal fade" id="addFormuleModal" tabindex="-1" aria-labelledby="addFormuleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal fade" id="addDiagnosisModal" tabindex="-1" aria-labelledby="addDiagnosisModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="addFormuleModalLabel">Добавить формулу</h5>
+                    <h5 class="modal-title" id="addDiagnosisModalLabel">Добавить формулу</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Отмена">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addFormule" action="">
+                        <form id="addDiagnosis" action="">
                             {% csrf_token %}
                             {% include "form-group.html" %}                               
                         </form>
@@ -257,17 +257,17 @@
 
     <!-- Редактировать формулу Modal -->
     <div class="container">
-        <div class="modal fade" id="editFormuleModal" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="addFormuleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editDiagnosisModal" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="addDiagnosisModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="addFormuleModalLabel">Редактировать формулу</h5>
+                    <h5 class="modal-title" id="addDiagnosisModalLabel">Редактировать формулу</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Отмена">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
                     <div class="modal-body">
-                        <form id="editFormule" action="">
+                        <form id="editDiagnosis" action="">
                             {% csrf_token %}
                             {% include "form-group.html" %}
                         </form>
@@ -279,11 +279,11 @@
 
     <!-- Удалить формулу Modal -->
     <div class="container">
-        <div class="modal fade" id="deleteFormule" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteDiagnosis" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <form id="deleteFormule" action="">
+                        <form id="deleteDiagnosis" action="">
                             <input type="hidden" id="Myid" name="id" value="">
                             <p>Вы уверены?</p>
                             <div class="d-grid gap-2">

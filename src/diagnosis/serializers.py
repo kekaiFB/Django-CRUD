@@ -2,7 +2,7 @@ from .models import *
 from rest_framework import serializers
 
 
-class FormuleSerializer(serializers.ModelSerializer):
+class DiagnosisSerializer(serializers.ModelSerializer):
     pol = serializers.CharField(source='patient.pol', read_only=True)
     vozrast = serializers.IntegerField(source='patient.vozrast', read_only=True)
     ves = serializers.FloatField(source='patient.ves', read_only=True)

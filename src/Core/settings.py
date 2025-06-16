@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'users.apps.UsersConfig',
     # Register the diagnosis application under its actual module path.
-    'formules.apps.DiagnosisConfig',
+    'diagnosis.apps.DiagnosisConfig',
 ]
 
 MIDDLEWARE = [
