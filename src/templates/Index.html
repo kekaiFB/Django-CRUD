@@ -1,0 +1,287 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<title>Формулы</title>
+</head>
+<style>
+    .table-container {
+        background: linear-gradient(135deg, #f7fafd, #edf4fb);
+        padding: 1.5rem;
+        border-radius: 12px;
+        overflow-x: auto;
+        box-shadow: 0 4px 14px rgba(0, 123, 255, 0.07);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 14px;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #d9ecff, #e6f4ff);
+        color: #007bff;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #c6d4e1;
+    }
+
+    th, td {
+        padding: 10px 14px;
+        border: 1px solid #e3e9f0;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background-color: #f0f6ff;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    tbody tr td:last-child {
+        white-space: nowrap;
+    }
+
+    .rounded {
+        border-radius: 12px !important;
+    }
+
+    .btn-outline-primary, .btn-outline-danger {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+
+    .btn-outline-primary {
+        color: #375a7f;
+        border: 1px solid #375a7f;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #375a7f;
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: #b33a3a;
+        border: 1px solid #b33a3a;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #b33a3a;
+        color: white;
+    }
+
+    .btn-gradient-physics {
+        background: linear-gradient(135deg, #007bff, #00d4ff);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        font-weight: 500;
+        font-size: 14px;
+        border-radius: 6px;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-gradient-physics:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 212, 255, 0.3);
+    }
+
+    .btn-gradient-physics:active {
+        transform: scale(0.96);
+        box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+    }
+
+    .btn-gradient-physics i {
+        font-size: 16px;
+    }
+
+    .btn-physics {
+        border: none;
+        padding: 6px 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        transition: all 0.2s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-physics:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-physics:active {
+        transform: scale(0.96);
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg,rgb(94, 225, 118),rgb(176, 235, 179));
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #ff4c4c, #ff7b7b);
+    }
+
+    .btn-physics i {
+        font-size: 14px;
+    }
+</style>
+
+
+
+<body>
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-sm-12 m-2">
+                <button type="button" class="btn-gradient-physics" data-toggle="modal" data-target="#addFormuleModal">
+                    <i class="fas fa-plus-circle"></i> Добавить формулу
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-container">
+                    <table id="Formule-Records" class="table table-hover table-striped rounded">
+                        <thead class="thead-dark">
+                            <tr>
+                              <th>Действия</th>
+                              <th>ФИО</th>
+                              <th>Пол</th>
+                              <th>Возраст</th>
+                              <th>Вес</th>
+                              <th>Рост</th>
+                              <th>Симптомы (дни)</th>
+                              <th>Анамнез</th>
+                              <th>Кашель</th>
+                              <th>Мокрота</th>
+                              <th>Одышка</th>
+                              <th>Температура</th>
+                              <th>Притупление</th>
+                              <th>Ослабление дыхания</th>
+                              <th>Аускультация</th>
+                              <th>Сатурация</th>
+                              <th>ЧСС</th>
+                              <th>ОФВ1</th>
+                              <th>ЖЕЛ, ОФВ1</th>
+                              <th>Лимфаденопатия</th>
+                              <th>Очаги</th>
+                              <th>Консолидации</th>
+                              <th>ФК изменения</th>
+                              <th>Полости</th>
+                              <th>Фиброз</th>
+                              <th>Выпот</th>
+                              <th>Лейкоциты</th>
+                              <th>Палочкоядерные</th>
+                              <th>Эозинофилы</th>
+                              <th>СОЭ</th>
+                              <th>СРБ</th>
+                              <th>ИМТ</th>
+                              <th>Дата создания</th>
+                              <th>Дата редактирования</th>
+                            </tr>
+                        </thead> 
+                        <tbody></tbody>                                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 m-2">
+                <button type="button" class="btn-gradient-physics" data-toggle="modal" data-target="#addFormuleModal">
+                    <i class="fas fa-plus-circle"></i> Добавить формулу
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Добавить формулу Modal -->
+    <div class="container">        
+        <div class="modal fade" id="addFormuleModal" tabindex="-1" aria-labelledby="addFormuleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="addFormuleModalLabel">Добавить формулу</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Отмена">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addFormule" action="">
+                            {% csrf_token %}
+                            {% include "form-group.html" %}                               
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Редактировать формулу Modal -->
+    <div class="container">
+        <div class="modal fade" id="editFormuleModal" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="addFormuleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="addFormuleModalLabel">Редактировать формулу</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Отмена">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editFormule" action="">
+                            {% csrf_token %}
+                            {% include "form-group.html" %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Удалить формулу Modal -->
+    <div class="container">
+        <div class="modal fade" id="deleteFormule" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form id="deleteFormule" action="">
+                            <input type="hidden" id="Myid" name="id" value="">
+                            <p>Вы уверены?</p>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger btn-sm" id="p-delete">Удалить формулу</button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Отмена</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<script src={% static "js/script.js" %}></script>
+</body>
+</html>
