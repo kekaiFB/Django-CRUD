@@ -167,6 +167,9 @@
             <div class="d-flex align-items-center">
                 <span class="mr-3 text-secondary font-weight-bold">
                 {{ request.user.email }}
+                <a href="{% url 'profile_edit' %}" class="btn btn-physics btn-edit ml-2">
+                <i class="fas fa-user-cog"></i> Профиль
+                </a>
                 <a href="{% url 'users_view' %}" class="btn btn-physics btn-edit ml-2">
                 <i class="fas fa-user"></i> Пользователи
                 </a>
