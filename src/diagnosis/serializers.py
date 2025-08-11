@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 class DiagnosisSerializer(serializers.ModelSerializer):
-    fio = serializers.CharField(source='patient.email', read_only=True)
+    fio = serializers.CharField(source='patient.username', read_only=True)
     pol = serializers.CharField(source='patient.pol', read_only=True)
     vozrast = serializers.IntegerField(source='patient.vozrast', read_only=True)
     ves = serializers.FloatField(source='patient.ves', read_only=True)
@@ -13,7 +13,10 @@ class DiagnosisSerializer(serializers.ModelSerializer):
 
         placeholders = {
             'simptomy_dni': "(до 5 дней., 5-10, более 10, более 15)",
-            'anamnez': "ССЗ – да (0), нет (1), Сердечная недостаточность, СД",
+            'vlazhnye_hripi': "0 — нет, 1 — есть",
+            'krepitaciya': "0 — нет, 1 — есть",
+            'suhie_hripi': "0 — нет, 1 — есть",
+            'distancnye_svistyashchie_hripi': "0 — нет, 1 — есть",
             'kashel': "Непродуктивный (7-10), Влажный (4-6), Покашливание (0-3)",
             'mokrota': "1 - слизистая, 2 - слиз-гнойная, 3 - гнойная",
             'odyshka': "0 — нет, 10 — сильная отдышка",

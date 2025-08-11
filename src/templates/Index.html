@@ -8,7 +8,10 @@
 <meta name="Description" content="Enter your description here"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<title>Формулы</title>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+<title>Пациенты</title>
 </head>
 <style>
     body {
@@ -23,6 +26,19 @@
         box-shadow: 0 4px 14px rgba(0, 123, 255, 0.07);
     }
 
+    /* Улучшенный контейнер таблицы */
+    .table-container {
+        background: linear-gradient(135deg, #f8f9ff, #e3f2fd);
+        padding: 2rem;
+        border-radius: 16px;
+        overflow-x: auto; /* Горизонтальная прокрутка для таблицы */
+        overflow-y: hidden;
+        box-shadow: 0 8px 32px rgba(0, 123, 255, 0.12);
+        border: 1px solid rgba(0, 123, 255, 0.1);
+        position: relative;
+    }
+
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -31,6 +47,21 @@
         font-size: 14px;
         border-radius: 8px;
         overflow: hidden;
+    }
+
+    /* Улучшенная таблица */
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e3e9f0;
+        table-layout: fixed; /* Фиксированная ширина столбцов */
     }
 
     thead {
@@ -42,30 +73,220 @@
         border-bottom: 2px solid #c6d4e1;
     }
 
-    th, td {
-        padding: 10px 14px;
-        border: 1px solid #e3e9f0;
-        text-align: center;
-        vertical-align: middle;
+    /* Улучшенные заголовки */
+    thead {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        text-transform: uppercase;
+        font-size: 11px; /* Уменьшенный размер шрифта для заголовков */
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        border-bottom: none;
+        position: relative;
+        white-space: nowrap; /* Заголовки не переносятся */
     }
 
-    tbody tr:hover {
-        background-color: #f0f6ff;
-        transition: background-color 0.2s ease-in-out;
+
+   
+
+
+    /* Скрываем кнопку редактирования диагноза по умолчанию */
+    .btn-diagnosis-edit {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-left: 8px;
     }
 
-    tbody tr td:last-child {
-        white-space: nowrap;
+    .btn-diagnosis-edit:hover {
+        background: linear-gradient(135deg, #218838, #1ea085);
+        color: white;
+        transform: scale(1.05);
+    }
+
+
+    /* Улучшенные стили для кнопок в таблице */
+    .btn-diagnosis-edit {
+        opacity: 0;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-left: 8px;
+        box-shadow: 0 2px 8px rgba(23, 162, 184, 0.2);
+        min-width: 70px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-diagnosis-edit:hover {
+        background: linear-gradient(135deg, #138496, #117a8b);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(23, 162, 184, 0.3);
+    }
+
+  
+
+
+
+
+
+
+    
+    
+  
+    /* Улучшенные стили для кнопок в ячейках */
+    td .btn {
+        margin: 2px;
+        font-size: 10px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+    
+    /* Стили для кнопки редактирования диагноза */
+    .btn-diagnosis-edit {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Улучшенные стили для строк таблицы */
+    tbody tr {
+        border-bottom: 1px solid #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    /* Чередование цветов строк для лучшей читаемости */
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    
+    tbody tr:nth-child(odd) {
+        background-color: #ffffff;
     }
 
     .rounded {
         border-radius: 12px !important;
+    }
+    
+   
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 8px 12px;
+        margin: 0 2px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        color: #007bff !important;
+        transition: all 0.3s ease;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white !important;
+        border-color: #007bff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white !important;
+        border-color: #007bff;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+    }
+    
+    /* Стили для поиска и фильтрации */
+    .dataTables_wrapper .dataTables_filter input {
+        border: 2px solid #e3e9f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+    
+    .dataTables_wrapper .dataTables_filter input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        outline: none;
+        background: white;
+    }
+    
+    .dataTables_wrapper .dataTables_length select {
+        border: 2px solid #e3e9f0;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+    
+    .dataTables_wrapper .dataTables_length select:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        outline: none;
+        background: white;
+    }
+    
+    /* Адаптивные стили для мобильных устройств */
+    @media (max-width: 768px) {
+        .table-container {
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        table {
+            font-size: 12px;
+        }
+        
+        th, td {
+            padding: 8px 12px;
+        }
+        
     }
 
     .btn-outline-primary, .btn-outline-danger {
         font-size: 12px;
         padding: 4px 8px;
         border-radius: 4px;
+    }
+    
+    /* Стили для кнопок экспорта */
+    .export-buttons .btn {
+        margin: 5px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: 2px solid;
+        min-width: 80px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .export-buttons .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
     }
 
     .btn-outline-primary {
@@ -86,6 +307,52 @@
     .btn-outline-danger:hover {
         background-color: #b33a3a;
         color: white;
+    }
+
+    /* Улучшенные стили для основных кнопок */
+    .btn-outline-primary, .btn-outline-danger {
+        font-size: 11px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: 2px solid;
+        min-width: 65px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-outline-primary {
+        color: #007bff;
+        border-color: #007bff;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-color: #007bff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        border-color: #dc3545;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
     }
 
     .btn-gradient-physics {
@@ -150,6 +417,140 @@
     .btn-physics i {
         font-size: 14px;
     }
+
+    /* Стили для DataTable */
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 15px;
+    }
+    
+    .dataTables_wrapper .dataTables_length {
+        margin-bottom: 15px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 15px;
+    }
+    
+    /* Стили для фильтров столбцов */
+    thead th input {
+        margin-top: 5px;
+        font-size: 12px;
+        padding: 4px 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 120px;
+    }
+    
+    thead th input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    /* Стили для кнопок экспорта */
+    #exportButtons .btn {
+        margin: 0 3px;
+        font-size: 12px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: 2px solid;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    #exportButtons .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    #exportButtons .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #exportButtons .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    #exportButtons .btn-outline-secondary:hover {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        color: white;
+        border-color: #6c757d;
+    }
+
+    #exportButtons .btn i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+    
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 768px) {
+        #exportButtons {
+            text-align: center !important;
+            margin-bottom: 15px;
+        }
+        
+        #exportButtons .btn {
+            margin: 2px;
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+        
+        thead th input {
+            max-width: 80px;
+            font-size: 11px;
+        }
+    }
+
+    /* Улучшенные стили для DataTable */
+    .dataTables_wrapper {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 123, 255, 0.1);
+    }
+
+    /* Стили для элементов управления DataTable */
+    .dataTables_length select,
+    .dataTables_filter input {
+        border: 2px solid #e3e9f0;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+
+    .dataTables_length select:focus,
+    .dataTables_filter input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.15);
+        background: white;
+        transform: translateY(-1px);
+    }
+
+    /* Улучшенные стили для элементов управления DataTable */
+    .dataTables_length select,
+    .dataTables_filter input {
+        border: 2px solid #e3e9f0;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        color: #495057;
+    }
+
+
+   
 </style>
 
 
@@ -160,20 +561,22 @@
             <div class="col-sm-12 m-2 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
                 <button type="button" class="btn-gradient-physics mr-3" data-toggle="modal" data-target="#addDiagnosisModal">
-                    <i class="fas fa-plus-circle"></i> Добавить диагноз
+                    <i class="fas fa-plus-circle"></i> Добавить пациента
                 </button>
-                <h2 class="mb-0 font-weight-bold text-primary" style="letter-spacing:1px;">Список диагнозов</h2>
+                <h2 class="mb-0 font-weight-bold page-title fade-in-up" style="letter-spacing:1px;">Список пациентов</h2>
             </div>
             <div class="d-flex align-items-center">
-                <span class="mr-3 text-secondary font-weight-bold">
-                {{ request.user.email }}
-                <a href="{% url 'profile_edit' %}" class="btn btn-physics btn-edit ml-2">
-                <i class="fas fa-user-cog"></i> Профиль
-                </a>
-                <a href="{% url 'users_view' %}" class="btn btn-physics btn-edit ml-2">
-                <i class="fas fa-user"></i> Пользователи
-                </a>
-                </span>
+                <div class="user-profile mr-3">
+                    <span class="text-secondary font-weight-bold">
+                    {{ request.user.email }}
+                    <a href="{% url 'profile_edit' %}" class="btn btn-physics btn-edit ml-2">
+                    <i class="fas fa-user-cog"></i> Профиль
+                    </a>
+                    <a href="{% url 'users_view' %}" class="btn btn-physics btn-edit ml-2">
+                    <i class="fas fa-user"></i> Пользователи
+                    </a>
+                    </span>
+                </div>
                 <a href="{% url 'logout' %}" class="btn btn-physics btn-delete ml-2">
                 <i class="fas fa-sign-out-alt"></i> Выйти
                 </a>
@@ -182,12 +585,31 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="table-container">
+                <div class="table-container fade-in-up">
+                    <!-- Кнопки экспорта -->
+                    <div class="mb-3 text-right">
+                        <div class="btn-group" role="group" id="exportButtons">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="copyBtn">
+                                <i class="fas fa-copy"></i> Копировать
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="csvBtn">
+                                <i class="fas fa-file-csv"></i> CSV
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="excelBtn">
+                                <i class="fas fa-file-excel"></i> Excel
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="printBtn">
+                                <i class="fas fa-print"></i> Печать
+                            </button>
+                        </div>
+                    </div>
+                    
                     <table id="Diagnosis-Records" class="table table-hover table-striped rounded">
                         <thead class="thead-dark">
                             <tr>
                               <th>Действия</th>
                               <th>ФИО</th>
+                              <th>Диагноз</th>
                               <th>Пол</th>
                               <th>Возраст</th>
                               <th>Вес</th>
@@ -202,7 +624,7 @@
                               <th>Ослабление дыхания</th>
                               <th>Аускультация</th>
                               <th>Сатурация</th>
-                              <th>ЧСС</th>
+                              <th>ЧС</th>
                               <th>ОФВ1</th>
                               <th>ЖЕЛ, ОФВ1</th>
                               <th>Лимфаденопатия</th>
@@ -218,8 +640,6 @@
                               <th>СОЭ</th>
                               <th>СРБ</th>
                               <th>ИМТ</th>
-                              <th>Дата создания</th>
-                              <th>Дата редактирования</th>
                             </tr>
                         </thead> 
                         <tbody></tbody>                                        
@@ -280,6 +700,36 @@
         </div>
     </div>
 
+    <!-- Редактировать только диагноз Modal -->
+    <div class="container">
+        <div class="modal fade" id="editDiagnosisOnlyModal" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="editDiagnosisOnlyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="editDiagnosisOnlyModalLabel">Редактировать диагноз</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Отмена">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editDiagnosisOnly" action="">
+                            {% csrf_token %}
+                            <input type="hidden" id="DiagnosisId" name="id" value="">
+                            <div class="mb-3">
+                                <label class="form-label">Диагноз</label>
+                                <textarea class="form-control" name="diagnosis" id="diagnosisText" rows="4" placeholder="Введите диагноз"></textarea>
+                            </div>
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Отмена</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Удалить диагноз Modal -->
     <div class="container">
         <div class="modal fade" id="deleteDiagnosis" tabindex="-1" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -300,9 +750,16 @@
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.select.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.searchPanes.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static 'js/toastr.min.js' %}"></script>
 <script src={% static "js/script.js" %}></script>
 </body>
 </html>

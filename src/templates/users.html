@@ -96,6 +96,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Email</th>
+                    <th>ФИО</th>
                     <th>Роли</th>
                     {% if is_admin %}<th>Действия</th>{% endif %}
                 </tr>
@@ -105,6 +106,7 @@
                     <tr>
                         <td>{{ u.id }}</td>
                         <td>{{ u.email }}</td>
+                        <td>{{ u.username }}</td>
                         <td>
                             {% for g in u.groups.all %}
                                 {{ g.name }}{% if not forloop.last %}, {% endif %}

@@ -12,6 +12,8 @@ class Diagnosis(models.Model):
         null=True,
     )
 
+    diagnosis = models.CharField("Диагноз", max_length=255, blank=True, null=True)
+
     simptomy_dni = models.IntegerField("Начало или длительность симптомов (в днях)", blank=True, null=True)
     anamnez = models.IntegerField("Анамнез", blank=True, null=True)
     kashel = models.IntegerField("Кашель", blank=True, null=True)
@@ -20,6 +22,10 @@ class Diagnosis(models.Model):
     temperatura = models.FloatField("Температура тела", blank=True, null=True)
     pritplenie = models.IntegerField("Притупление перкуторного звука", blank=True, null=True)
     oslablenie = models.IntegerField("Ослабление везикулярного дыхания", blank=True, null=True)
+    vlazhnye_hripi = models.IntegerField("Влажные хрипы", blank=True, null=True)
+    krepitaciya = models.IntegerField("Крепитация", blank=True, null=True)
+    suhie_hripi = models.IntegerField("Сухие хрипы", blank=True, null=True)
+    distancnye_svistyashchie_hripi = models.IntegerField("Дистантные свистящие хрипы", blank=True, null=True)
     auskultaciya = models.IntegerField("Аускультативная картина", blank=True, null=True)
     saturaciya = models.FloatField("Уровень сатурации О2", blank=True, null=True)
     chss = models.IntegerField("Частота сокращений", blank=True, null=True)

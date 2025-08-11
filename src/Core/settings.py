@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-t2yox#da=eazcucdn%nk81i)=o=r3dll_e&j$95!g+ho!&5jk1
 # SECURITY WARNING: don't run with debug turned on in formuleion!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -158,3 +158,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
 
 AUTH_PASSWORD_VALIDATORS = []
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+]
