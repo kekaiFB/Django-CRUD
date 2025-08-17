@@ -563,10 +563,15 @@
                 <button type="button" class="btn-gradient-physics mr-3" data-toggle="modal" data-target="#addDiagnosisModal">
                     <i class="fas fa-plus-circle"></i> Добавить пациента
                 </button>
-                <h2 class="mb-0 font-weight-bold page-title fade-in-up" style="letter-spacing:1px;">Список пациентов</h2>
-                <a href="{% url 'patient_list' %}" class="btn btn-physics btn-edit ml-2">
-                    <i class="fas fa-list"></i> Лечение
+                <h2 class="mb-0 font-weight-bold page-title fade-in-up" style="letter-spacing:1px;">Список рекомендаций</h2>
+                <a href="{% url 'Index' %}" class="btn btn-physics btn-edit ml-2">
+                    <i class="fas fa-list"></i>  Список пациентов
                 </a>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'admin:diagnosis_diagnosis_changelist' %}" class="btn btn-physics btn-edit ml-2">
+                        <i class="fas fa-list"></i> Редактировать диагнозы
+                    </a>
+                {% endif %}
             </div>
             <div class="d-flex align-items-center">
                 <div class="user-profile mr-3">
@@ -607,42 +612,12 @@
                         </div>
                     </div>
                     
-                    <table id="Diagnosis-Records" class="table table-hover table-striped rounded">
+                    <table id="Diagnosis-Records" class="table table-hover table-striped rounded only_diagnosis">
                         <thead class="thead-dark">
                             <tr>
-                              <th>Действия</th>
                               <th>ФИО</th>
                               <th>Диагноз</th>
-                              <th>Пол</th>
-                              <th>Возраст</th>
-                              <th>Вес</th>
-                              <th>Рост</th>
-                              <th>Симптомы (дни)</th>
-                              <th>Анамнез</th>
-                              <th>Кашель</th>
-                              <th>Мокрота</th>
-                              <th>Одышка</th>
-                              <th>Температура</th>
-                              <th>Притупление</th>
-                              <th>Ослабление дыхания</th>
-                              <th>Аускультация</th>
-                              <th>Сатурация</th>
-                              <th>ЧС</th>
-                              <th>ОФВ1</th>
-                              <th>ЖЕЛ, ОФВ1</th>
-                              <th>Лимфаденопатия</th>
-                              <th>Очаги</th>
-                              <th>Консолидации</th>
-                              <th>ФК изменения</th>
-                              <th>Полости</th>
-                              <th>Фиброз</th>
-                              <th>Выпот</th>
-                              <th>Лейкоциты</th>
-                              <th>Палочкоядерные</th>
-                              <th>Эозинофилы</th>
-                              <th>СОЭ</th>
-                              <th>СРБ</th>
-                              <th>ИМТ</th>
+                              <th>Рекомендуемое лечение</th>
                             </tr>
                         </thead> 
                         <tbody></tbody>                                        

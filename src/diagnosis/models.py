@@ -43,6 +43,7 @@ class Diagnosis(models.Model):
     eozinofily = models.FloatField("Эозинофилы, %", blank=True, null=True)
     soe = models.FloatField("СОЭ мм/ч", blank=True, null=True)
     bak_srb = models.FloatField("БАК (СРБ, мг/л)", blank=True, null=True)
+    recomendation_healing = models.TextField("Рекомендуемое лечение", blank=True, null=True)
 
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField("Дата редактирования", auto_now=True)
@@ -59,7 +60,7 @@ class Diagnosis(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Diagnosis #{self.pk}"
+        return f"{self.patient.username} - {self.diagnosis}"
 
     class Meta:
-        verbose_name_plural = "Формулы"
+        verbose_name_plural = "Диагнозы"

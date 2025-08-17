@@ -1,3 +1,6 @@
+const only_diagnosis = !!document.querySelector('.only_diagnosis');
+
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -37,24 +40,36 @@ $.ajax({
     success : function (response) {
         let trHTML = '';
     $.each(response, function (i, item) {
-        trHTML += `<tr>
-            <td>
-                <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisModal" title="Редактировать">
-                    <i class="fas fa-pen"></i>
-                </button>
+        trHTML += `<tr>`;
 
-                <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteDiagnosis" title="Удалить">
-                    <i class="fas fa-trash"></i>
-                </button>
-
-            </td>
-            <td>${item.fio ?? ''}</td>
-            <td>
+        // коллонка действий: кнопки или пустая ячейка
+        if (!only_diagnosis) {
+        trHTML += `<td>
+            <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisModal" title="Редактировать">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteDiagnosis" title="Удалить">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        `;
+        }
+        
+        trHTML += `
+          <td>${item.fio ?? ''}</td>
+          <td>
             ${item.diagnosis ?? ''}
             <button class="btn-diagnosis-edit btn-edit update-diagnosis-only" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisOnlyModal" title="Редактировать диагноз">
-                    <i class="fas fa-pen"></i>
-                </button>
-            </td>
+              <i class="fas fa-pen"></i>
+            </button>
+          </td>
+        `;
+        
+        // далее — блоки по режимам
+        if (only_diagnosis) {
+          trHTML += `<td>${item.recomendation_healing ?? ''}</td>`;
+        } else {
+          trHTML += `
             <td>${item.pol ?? ''}</td>
             <td>${item.vozrast ?? ''}</td>
             <td>${item.ves ?? ''}</td>
@@ -85,13 +100,70 @@ $.ajax({
             <td>${item.soe ?? ''}</td>
             <td>${item.bak_srb ?? ''}</td>
             <td>${item.imt ?? ''}</td>
-        </tr>`;
+          `;
+        }
+        
+        trHTML += `</tr>`;
+        
 });
 $('#Diagnosis-Records tbody').html(trHTML);
         // Инициализация DataTable после загрузки данных
         initializeDataTable();
     }
 });
+
+
+let columnDefs = [];
+
+if (only_diagnosis) {
+    columnDefs = [];
+} else {
+    columnDefs = [
+        {
+            targets: 0, // действия
+            orderable: false,
+            searchable: false,
+            width: '100px',
+            className: 'text-center actions-column'
+        },
+        {
+            targets: 1, // ФИО
+            width: '180px',
+            className: 'text-center fio-column'
+        },
+        {
+            targets: 2, // Диагноз
+            width: '200px',
+            className: 'text-center diagnosis-column'
+        },
+        {
+            targets: 3, // Пол
+            width: '80px',
+            className: 'text-center gender-column'
+        },
+        {
+            targets: 4, // Возраст
+            width: '80px',
+            className: 'text-center age-column'
+        },
+        {
+            targets: 5, // Вес
+            width: '80px',
+            className: 'text-center weight-column'
+        },
+        {
+            targets: 6, // Рост
+            width: '80px',
+            className: 'text-center height-column'
+        },
+        {
+            targets: 7, // Дата
+            width: '120px',
+            className: 'text-center date-column'
+        }
+    ];
+}
+
 
 // Функция инициализации DataTable
 function initializeDataTable() {
@@ -105,51 +177,7 @@ function initializeDataTable() {
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
              '<"row"<"col-sm-12"tr>>' +
              '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        columnDefs: [
-            {
-                targets: 0, // Столбец с действиями
-                orderable: false,
-                searchable: false,
-                width: '100px',
-                className: 'text-center actions-column'
-            },
-            {
-                targets: 1, // Столбец ФИО
-                width: '180px',
-                className: 'text-center fio-column'
-            },
-            {
-                targets: 2, // Столбец с диагнозом
-                width: '200px',
-                className: 'text-center diagnosis-column'
-            },
-            {
-                targets: 3, // Столбец Пол
-                width: '80px',
-                className: 'text-center gender-column'
-            },
-            {
-                targets: 4, // Столбец Возраст
-                width: '80px',
-                className: 'text-center age-column'
-            },
-            {
-                targets: 5, // Столбец Вес
-                width: '80px',
-                className: 'text-center weight-column'
-            },
-            {
-                targets: 6, // Столбец Рост
-                width: '80px',
-                className: 'text-center height-column'
-            },
-            {
-                targets: 7, // Столбец Дата
-                width: '120px',
-                className: 'text-center date-column'
-            }
-        ],
-        order: [[1, 'asc'], [4, 'asc']], // Сортировка по ФИО, затем по возрасту
+        columnDefs: columnDefs,
         scrollX: true,
         scrollCollapse: true,
         autoWidth: false,
@@ -348,58 +376,70 @@ function refreshDataTable() {
         success: function(response) {
             let trHTML = '';
             $.each(response, function (i, item) {
-                trHTML += `<tr>
-                    <td>
-                        <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisModal" title="Редактировать">
-                            <i class="fas fa-pen"></i>
-                        </button>
+                trHTML += `<tr>`;
 
-                        <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteDiagnosis" title="Удалить">
-                            <i class="fas fa-trash"></i>
-                        </button>
+// коллонка действий: кнопки или пустая ячейка
+trHTML += only_diagnosis ? `<td></td>` : `
+  <td>
+    <button class="btn-physics btn-edit update" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisModal" title="Редактировать">
+      <i class="fas fa-pen"></i>
+    </button>
+    <button class="btn-physics btn-delete delete" id="${item.id}" data-toggle="modal" data-target="#deleteDiagnosis" title="Удалить">
+      <i class="fas fa-trash"></i>
+    </button>
+  </td>
+`;
 
-                    </td>
-                    <td>${item.fio ?? ''}</td>
-                    <td>
-                    ${item.diagnosis ?? ''}
-                    <button class="btn-diagnosis-edit btn-edit update-diagnosis-only" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisOnlyModal" title="Редактировать диагноз">
-                            <i class="fas fa-pen"></i>
-                        </button>
-                    </td>
-                    <td>${item.pol ?? ''}</td>
-                    <td>${item.vozrast ?? ''}</td>
-                    <td>${item.ves ?? ''}</td>
-                    <td>${item.rost ?? ''}</td>
-                    <td>${item.simptomy_dni ?? ''}</td>
-                    <td>${item.anamnez ?? ''}</td>
-                    <td>${item.kashel ?? ''}</td>
-                    <td>${item.mokrota ?? ''}</td>
-                    <td>${item.odyshka ?? ''}</td>
-                    <td>${item.temperatura ?? ''}</td>
-                    <td>${item.pritplenie ?? ''}</td>
-                    <td>${item.oslablenie ?? ''}</td>
-                    <td>${item.vlazhnye_hripi ?? ''}</td>
-                    <td>${item.krepitaciya ?? ''}</td>
-                    <td>${item.suhie_hripi ?? ''}</td>
-                    <td>${item.distancnye_svistyashchie_hripi ?? ''}</td>
-                    <td>${item.saturaciya ?? ''}</td>
-                    <td>${item.chs ?? ''}</td>
-                    <td>${item.ofv1 ?? ''}</td>
-                    <td>${item.zhel_ofv1 ?? ''}</td>
-                    <td>${item.limfadenopatiya ?? ''}</td>
-                    <td>${item.ochagi ?? ''}</td>
-                    <td>${item.konsolidacii ?? ''}</td>
-                    <td>${item.fibrozno_kistoznye ?? ''}</td>
-                    <td>${item.polosti ?? ''}</td>
-                    <td>${item.fibroz ?? ''}</td>
-                    <td>${item.plevralnyj_vypot ?? ''}</td>
-                    <td>${item.leykocity ?? ''}</td>
-                    <td>${item.palochko ?? ''}</td>
-                    <td>${item.eozinofily ?? ''}</td>
-                    <td>${item.soe ?? ''}</td>
-                    <td>${item.bak_srb ?? ''}</td>
-                    <td>${item.imt ?? ''}</td>
-                </tr>`;
+trHTML += `
+  <td>${item.fio ?? ''}</td>
+  <td>
+    ${item.diagnosis ?? ''}
+    <button class="btn-diagnosis-edit btn-edit update-diagnosis-only" id="${item.id}" data-toggle="modal" data-target="#editDiagnosisOnlyModal" title="Редактировать диагноз">
+      <i class="fas fa-pen"></i>
+    </button>
+  </td>
+`;
+
+// далее — блоки по режимам
+if (only_diagnosis) {
+  trHTML += `<td>${item.recomendation_healing ?? ''}</td>`;
+} else {
+  trHTML += `
+    <td>${item.pol ?? ''}</td>
+    <td>${item.vozrast ?? ''}</td>
+    <td>${item.ves ?? ''}</td>
+    <td>${item.rost ?? ''}</td>
+    <td>${item.simptomy_dni ?? ''}</td>
+    <td>${item.anamnez ?? ''}</td>
+    <td>${item.kashel ?? ''}</td>
+    <td>${item.mokrota ?? ''}</td>
+    <td>${item.odyshka ?? ''}</td>
+    <td>${item.temperatura ?? ''}</td>
+    <td>${item.pritplenie ?? ''}</td>
+    <td>${item.oslablenie ?? ''}</td>
+    <td>${item.auskultaciya ?? ''}</td>
+    <td>${item.saturaciya ?? ''}</td>
+    <td>${item.chss ?? ''}</td>
+    <td>${item.ofv1 ?? ''}</td>
+    <td>${item.zhel_ofv1 ?? ''}</td>
+    <td>${item.limfadenopatiya ?? ''}</td>
+    <td>${item.ochagi ?? ''}</td>
+    <td>${item.konsolidacii ?? ''}</td>
+    <td>${item.fibrozno_kistoznye ?? ''}</td>
+    <td>${item.polosti ?? ''}</td>
+    <td>${item.fibroz ?? ''}</td>
+    <td>${item.plevralnyj_vypot ?? ''}</td>
+    <td>${item.leykocity ?? ''}</td>
+    <td>${item.palochko ?? ''}</td>
+    <td>${item.eozinofily ?? ''}</td>
+    <td>${item.soe ?? ''}</td>
+    <td>${item.bak_srb ?? ''}</td>
+    <td>${item.imt ?? ''}</td>
+  `;
+}
+
+trHTML += `</tr>`;
+
             });
             
             // Очищаем и пересоздаем DataTable

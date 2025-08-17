@@ -44,6 +44,22 @@ def Index(request):
     return render(request, 'Index.html', context)
 
 
+@login_required
+def PatientList(request):
+    form = DiagnosisForm()
+    if request.user.groups.filter(name='Врач').exists() or request.user.is_superuser:
+        patient_group = Group.objects.filter(name='Пациент').first()
+        if patient_group and 'patient' in form.fields:
+            form.fields['patient'].queryset = patient_group.user_set.all().order_by('email')
+    else:
+        if 'patient' in form.fields:
+            form.fields['patient'].widget = forms.HiddenInput()
+    context = {
+        'form': form,
+    }
+    context['is_doctor'] = request.user.groups.filter(name='Врач').exists()
+
+    return render(request, 'patient.html', context)
 
 # --- простые хелперы ---
 def _maybe(val, p_none=0.15):
