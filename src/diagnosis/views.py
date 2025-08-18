@@ -138,18 +138,92 @@ def _vitals_by_dx(dx: str):
 
 def _create_seed():
     with transaction.atomic():
+        # for _ in range(10):
+        #     gender = random.choices(["М","Ж"], weights=[0.48, 0.52])[0]
+        #     if gender == "М":
+        #         ln = random.choice(LAST_M); fn = random.choice(FIRST_M); pn = random.choice(PATR_M)
+        #         height = round(_clamp(random.gauss(176, 7), 160, 200), 0)   # см
+        #     else:
+        #         ln = random.choice(LAST_F); fn = random.choice(FIRST_F); pn = random.choice(PATR_F)
+        #         height = round(_clamp(random.gauss(164, 6), 150, 185), 0)   # см
+
+        #     age = int(_clamp(round(random.gauss(45, 15)), 18, 85))
+        #     # целевой ИМТ 19–32 с норм. шумом
+        #     bmi = round(_clamp(random.gauss(26, 4), 17, 38), 1)
+        #     weight = round(bmi * pow(height/100.0, 2), 1)
+
+        #     username = _unique_username(ln, fn)
+        #     user = User.objects.create(
+        #         username=username,
+        #         first_name=fn,
+        #         last_name=ln,
+        #         email=_random_email(ln, fn),
+        #         pol=gender,
+        #         vozrast=age,
+        #         ves=weight,
+        #         rost=height,
+        #     )
+        #     if hasattr(user, "set_unusable_password"):
+        #         user.set_unusable_password()
+        #         user.save(update_fields=["password"])
+
+        #     dx = random.choice(DX)
+        #     t, sat, chs, leu, crp, soe, cons, och, pleur = _vitals_by_dx(dx)
+
+
+        #     # лёгочные: ОФВ1 и ЖЕЛ (л)
+        #     ofv1 = round(_clamp(random.gauss(2.8 if gender=="Ж" else 3.2, 0.6), 0.8, 5.5), 2)
+        #     zhel = round(_clamp(ofv1 + random.uniform(0.9, 2.5), 1.5, 7.5), 2)
+
+        #     Diagnosis.objects.create(
+        #         patient=user,
+        #         diagnosis=dx,
+
+        #         simptomy_dni=_maybe(random.randint(0, 21)),
+        #         anamnez=_maybe(random.randint(0, 1)),
+        #         kashel=_maybe(random.randint(0, 3)),
+        #         mokrota=_maybe(random.randint(0, 1)),
+        #         odyshka=_maybe(random.randint(0, 3)),
+        #         temperatura=_maybe(t),
+        #         pritplenie=_maybe(random.randint(0, 1)),
+        #         oslablenie=_maybe(random.randint(0, 3)),
+        #         vlazhnye_hripi=_maybe(random.randint(0, 1)),
+        #         krepitaciya=_maybe(random.randint(0, 1)),
+        #         suhie_hripi=_maybe(random.randint(0, 1)),
+        #         distancnye_svistyashchie_hripi=_maybe(random.randint(0, 1)),
+        #         saturaciya=_maybe(sat),
+        #         chss=_maybe(chs),
+        #         ofv1=_maybe(ofv1),
+        #         zhel_ofv1=_maybe(zhel),
+        #         limfadenopatiya=_maybe(random.randint(0, 1)),
+        #         ochagi=_maybe(och),
+        #         konsolidacii=_maybe(cons),
+        #         fibrozno_kistoznye=_maybe(random.randint(0, 1)),
+        #         polosti=_maybe(random.randint(0, 1)),
+        #         fibroz=_maybe(random.randint(0, 1)),
+        #         plevralnyj_vypot=_maybe(pleur),
+        #         leykocity=_maybe(leu),
+        #         palochko=_maybe(round(_clamp(random.gauss(5.0, 3.0), 0.0, 30.0), 1)),
+        #         eozinofily=_maybe(round(_clamp(random.gauss(2.5, 1.5), 0.0, 15.0), 1)),
+        #         soe=_maybe(soe),
+        #         bak_srb=_maybe(crp),
+
+        #         imt=_maybe(bmi),  # ИМТ считаем из роста/веса
+        #     )
+
+        #         # создаём ещё 10 с фиксированным диагнозом ХОБЛ
+        
         for _ in range(10):
             gender = random.choices(["М","Ж"], weights=[0.48, 0.52])[0]
             if gender == "М":
                 ln = random.choice(LAST_M); fn = random.choice(FIRST_M); pn = random.choice(PATR_M)
-                height = round(_clamp(random.gauss(176, 7), 160, 200), 0)   # см
+                height = round(_clamp(random.gauss(176, 7), 160, 200), 0)
             else:
                 ln = random.choice(LAST_F); fn = random.choice(FIRST_F); pn = random.choice(PATR_F)
-                height = round(_clamp(random.gauss(164, 6), 150, 185), 0)   # см
+                height = round(_clamp(random.gauss(164, 6), 150, 185), 0)
 
-            age = int(_clamp(round(random.gauss(45, 15)), 18, 85))
-            # целевой ИМТ 19–32 с норм. шумом
-            bmi = round(_clamp(random.gauss(26, 4), 17, 38), 1)
+            age = int(_clamp(round(random.gauss(50, 12)), 35, 85))
+            bmi = round(_clamp(random.gauss(27, 3), 18, 38), 1)
             weight = round(bmi * pow(height/100.0, 2), 1)
 
             username = _unique_username(ln, fn)
@@ -167,50 +241,35 @@ def _create_seed():
                 user.set_unusable_password()
                 user.save(update_fields=["password"])
 
-            dx = random.choice(DX)
+            dx = "ХОБЛ"
             t, sat, chs, leu, crp, soe, cons, och, pleur = _vitals_by_dx(dx)
 
-
-            # лёгочные: ОФВ1 и ЖЕЛ (л)
-            ofv1 = round(_clamp(random.gauss(2.8 if gender=="Ж" else 3.2, 0.6), 0.8, 5.5), 2)
-            zhel = round(_clamp(ofv1 + random.uniform(0.9, 2.5), 1.5, 7.5), 2)
+            ofv1 = round(_clamp(random.gauss(2.5 if gender=="Ж" else 3.0, 0.6), 0.7, 5.0), 2)
+            zhel = round(_clamp(ofv1 + random.uniform(0.8, 2.2), 1.5, 7.0), 2)
 
             Diagnosis.objects.create(
                 patient=user,
                 diagnosis=dx,
-
-                simptomy_dni=_maybe(random.randint(0, 21)),
-                anamnez=_maybe(random.randint(0, 1)),
-                kashel=_maybe(random.randint(0, 3)),
-                mokrota=_maybe(random.randint(0, 1)),
-                odyshka=_maybe(random.randint(0, 3)),
+                simptomy_dni=_maybe(random.randint(3, 21)),
+                anamnez=_maybe(1),
+                kashel=_maybe(random.randint(1, 3)),
+                mokrota=_maybe(1),
+                odyshka=_maybe(random.randint(1, 3)),
                 temperatura=_maybe(t),
                 pritplenie=_maybe(random.randint(0, 1)),
-                oslablenie=_maybe(random.randint(0, 3)),
+                oslablenie=_maybe(random.randint(1, 3)),
                 vlazhnye_hripi=_maybe(random.randint(0, 1)),
-                krepitaciya=_maybe(random.randint(0, 1)),
-                suhie_hripi=_maybe(random.randint(0, 1)),
+                suhie_hripi=_maybe(1),
                 distancnye_svistyashchie_hripi=_maybe(random.randint(0, 1)),
                 saturaciya=_maybe(sat),
                 chss=_maybe(chs),
                 ofv1=_maybe(ofv1),
                 zhel_ofv1=_maybe(zhel),
-                limfadenopatiya=_maybe(random.randint(0, 1)),
-                ochagi=_maybe(och),
-                konsolidacii=_maybe(cons),
-                fibrozno_kistoznye=_maybe(random.randint(0, 1)),
-                polosti=_maybe(random.randint(0, 1)),
-                fibroz=_maybe(random.randint(0, 1)),
-                plevralnyj_vypot=_maybe(pleur),
                 leykocity=_maybe(leu),
-                palochko=_maybe(round(_clamp(random.gauss(5.0, 3.0), 0.0, 30.0), 1)),
-                eozinofily=_maybe(round(_clamp(random.gauss(2.5, 1.5), 0.0, 15.0), 1)),
                 soe=_maybe(soe),
                 bak_srb=_maybe(crp),
-
-                imt=_maybe(bmi),  # ИМТ считаем из роста/веса
+                imt=_maybe(bmi),
             )
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
