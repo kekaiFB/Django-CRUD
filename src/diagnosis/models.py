@@ -28,7 +28,7 @@ class Diagnosis(models.Model):
     distancnye_svistyashchie_hripi = models.IntegerField("Дистантные свистящие хрипы", blank=True, null=True)
     auskultaciya = models.IntegerField("Аускультативная картина", blank=True, null=True)
     saturaciya = models.FloatField("Уровень сатурации О2", blank=True, null=True)
-    chss = models.IntegerField("Частота сокращений", blank=True, null=True)
+    chs = models.IntegerField("Частота сокращений", blank=True, null=True)
     ofv1 = models.FloatField("ОФВ1", blank=True, null=True)
     zhel_ofv1 = models.FloatField("ЖЕЛ, ОФВ1", blank=True, null=True)
     limfadenopatiya = models.IntegerField("Лимфаденопатия", blank=True, null=True)

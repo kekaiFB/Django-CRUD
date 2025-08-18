@@ -84,7 +84,7 @@ $.ajax({
             <td>${item.oslablenie ?? ''}</td>
             <td>${item.auskultaciya ?? ''}</td>
             <td>${item.saturaciya ?? ''}</td>
-            <td>${item.chss ?? ''}</td>
+            <td>${item.chs ?? ''}</td>
             <td>${item.ofv1 ?? ''}</td>
             <td>${item.zhel_ofv1 ?? ''}</td>
             <td>${item.limfadenopatiya ?? ''}</td>
@@ -419,7 +419,7 @@ if (only_diagnosis) {
     <td>${item.oslablenie ?? ''}</td>
     <td>${item.auskultaciya ?? ''}</td>
     <td>${item.saturaciya ?? ''}</td>
-    <td>${item.chss ?? ''}</td>
+    <td>${item.chs ?? ''}</td>
     <td>${item.ofv1 ?? ''}</td>
     <td>${item.zhel_ofv1 ?? ''}</td>
     <td>${item.limfadenopatiya ?? ''}</td>

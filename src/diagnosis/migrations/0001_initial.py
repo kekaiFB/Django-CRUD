@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "chss",
+                    "chs",
                     models.IntegerField(
                         blank=True, null=True, verbose_name="Частота сокращений"
                     ),
