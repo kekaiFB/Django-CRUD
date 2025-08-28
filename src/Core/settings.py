@@ -163,5 +163,3 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.ngrok-free.app',
 ]
 
-# External API Configuration
-TREATMENT_API_URL = os.environ.get('TREATMENT_API_URL', 'https://api.example.com/treatment')
